@@ -1,9 +1,3 @@
-## Welcome to GitHub Pages
-
-
-
-
-
 ## Welcome to My Blogs
 
-You can link [medium.com/@bodin](https://medium.com/@bodin) 
+Visit link [medium.com/@bodin](https://medium.com/@bodin) 
