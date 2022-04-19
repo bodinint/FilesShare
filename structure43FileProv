@@ -1,0 +1,960 @@
+CREATE SCHEMA IF NOT EXISTS hdc; 
+
+
+CREATE TABLE hdc.ADDRESS
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    ADDRESSTYPE varchar(1) NOT NULL,
+    HOUSE_ID varchar(11),
+    HOUSETYPE varchar(1) NOT NULL,
+    ROOMNO varchar(10),
+    CONDO varchar(75),
+    HOUSENO varchar(75),
+    SOISUB varchar(255),
+    SOIMAIN varchar(255),
+    ROAD varchar(255),
+    VILLANAME varchar(255),
+    VILLAGE varchar(2) NOT NULL,
+    TAMBON varchar(2) NOT NULL,
+    AMPUR varchar(2) NOT NULL,
+    CHANGWAT varchar(2) NOT NULL,
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.ADDRESS ADD CONSTRAINT ADDRESS_PK PRIMARY KEY (HOSPCODE, PID, ADDRESSTYPE) ENABLED;
+CREATE TABLE hdc.ADMISSION
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    AN varchar(9) NOT NULL,
+    DATETIME_ADMIT timestamp NOT NULL,
+    WARDADMIT varchar(5) NOT NULL,
+    INSTYPE varchar(4) NOT NULL,
+    TYPEIN varchar(1) NOT NULL,
+    REFERINHOSP varchar(5),
+    CAUSEIN varchar(1),
+    ADMITWEIGHT numeric(5,1),
+    ADMITHEIGHT numeric(3,0),
+    DATETIME_DISCH timestamp NOT NULL,
+    WARDDISCH varchar(5) NOT NULL,
+    DISCHSTATUS varchar(1) NOT NULL,
+    DISCHTYPE varchar(1) NOT NULL,
+    REFEROUTHOSP varchar(5),
+    CAUSEOUT varchar(1),
+    COST numeric(11,2),
+    PRICE numeric(11,2) NOT NULL,
+    PAYPRICE numeric(11,2) NOT NULL,
+    ACTUALPAY numeric(11,2) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    DRG varchar(5),
+    RW numeric(11,4),
+    ADJRW numeric(11,4),
+    ERROR varchar(2),
+    WARNING varchar(4),
+    ACTLOS numeric(4,0),
+    GROUPER_VERSION varchar(20),
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.ADMISSION ADD CONSTRAINT ADMISSION_PK PRIMARY KEY (HOSPCODE, PID, AN, DATETIME_ADMIT) ENABLED;
+CREATE TABLE hdc.ANC
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    GRAVIDA varchar(2) NOT NULL,
+    ANCNO varchar(1),
+    GA varchar(2) NOT NULL,
+    ANCRESULT varchar(1) NOT NULL,
+    ANCPLACE varchar(5),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.ANC ADD CONSTRAINT ANC_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV) ENABLED;
+CREATE TABLE hdc.APPOINTMENT
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    AN varchar(9),
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    CLINIC varchar(5) NOT NULL,
+    APDATE date NOT NULL,
+    APTYPE varchar(3) NOT NULL,
+    APDIAG varchar(6),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.APPOINTMENT ADD CONSTRAINT APPOINTMENT_PK PRIMARY KEY (HOSPCODE, PID, SEQ, APTYPE) ENABLED;
+CREATE TABLE hdc.CARD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    INSTYPE_OLD varchar(2),
+    INSTYPE_NEW varchar(4) NOT NULL,
+    INSID varchar(18),
+    STARTDATE date,
+    EXPIREDATE date,
+    MAIN varchar(5),
+    SUB varchar(5),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.CARD ADD CONSTRAINT CARD_PK PRIMARY KEY (HOSPCODE, PID, INSTYPE_NEW) ENABLED;
+CREATE TABLE hdc.CARE_REFER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    CARETYPE varchar(1) NOT NULL,
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.CARE_REFER ADD CONSTRAINT CARE_REFER_PK PRIMARY KEY (HOSPCODE, REFERID, CARETYPE) ENABLED;
+CREATE TABLE hdc.CHARGE_IPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    AN varchar(9) NOT NULL,
+    DATETIME_ADMIT timestamp NOT NULL,
+    WARDSTAY varchar(5),
+    CHARGEITEM varchar(2) NOT NULL,
+    CHARGELIST varchar(6) NOT NULL,
+    QUANTITY numeric(11,0),
+    INSTYPE varchar(4) NOT NULL,
+    COST numeric(11,2),
+    PRICE numeric(11,2) NOT NULL,
+    PAYPRICE numeric(11,2) NOT NULL,
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.CHARGE_IPD ADD CONSTRAINT CHARGE_IPD_PK PRIMARY KEY (HOSPCODE, PID, AN, DATETIME_ADMIT, CHARGEITEM, CHARGELIST, INSTYPE) ENABLED;
+CREATE TABLE hdc.CHARGE_OPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    CLINIC varchar(5) NOT NULL,
+    CHARGEITEM varchar(2) NOT NULL,
+    CHARGELIST varchar(6) NOT NULL,
+    QUANTITY numeric(11,0),
+    INSTYPE varchar(4) NOT NULL,
+    COST numeric(11,2),
+    PRICE numeric(11,2) NOT NULL,
+    PAYPRICE numeric(11,2),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.CHARGE_OPD ADD CONSTRAINT CHARGE_OPD_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATE_SERV, CHARGEITEM, CHARGELIST, INSTYPE) ENABLED;
+CREATE TABLE hdc.CHRONIC
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    DATE_DIAG date NOT NULL,
+    CHRONIC varchar(6) NOT NULL,
+    HOSP_DX varchar(5),
+    HOSP_RX varchar(5),
+    DATE_DISCH date,
+    TYPEDISCH varchar(2) NOT NULL,
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.CHRONIC ADD CONSTRAINT CHRONIC_PK PRIMARY KEY (HOSPCODE, PID, DATE_DIAG, CHRONIC, D_UPDATE) ENABLED;
+CREATE TABLE hdc.CLINICAL_REFER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    DATETIME_ASSESS timestamp NOT NULL,
+    CLINICALCODE varchar(6) NOT NULL,
+    CLINICALNAME varchar(255),
+    CLINICALVAULE numeric(6,0),
+    CLINICALRESULT varchar(255),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+
+ALTER TABLE hdc.CLINICAL_REFER ADD CONSTRAINT CLINICAL_REFER_PK PRIMARY KEY (HOSPCODE, REFERID, DATETIME_ASSESS, CLINICALCODE) ENABLED;
+
+CREATE TABLE hdc.COMMUNITY_ACTIVITY
+(
+    HOSPCODE varchar(5) NOT NULL,
+    VID varchar(8) NOT NULL,
+    DATE_START date NOT NULL,
+    DATE_FINISH date,
+    COMACTIVITY varchar(7) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.COMMUNITY_ACTIVITY ADD CONSTRAINT COMMUNITY_ACTIVITY_PK PRIMARY KEY (HOSPCODE, VID, DATE_START, COMACTIVITY) ENABLED;
+CREATE TABLE hdc.COMMUNITY_SERVICE
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    COMSERVICE varchar(7) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.COMMUNITY_SERVICE ADD CONSTRAINT COMMUNITY_SERVICE_PK PRIMARY KEY (HOSPCODE, PID, SEQ, COMSERVICE) ENABLED;
+CREATE TABLE hdc.DEATH
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    HOSPDEATH varchar(5),
+    AN varchar(9),
+    SEQ varchar(16),
+    DDEATH date NOT NULL,
+    CDEATH_A varchar(6) NOT NULL,
+    CDEATH_B varchar(6),
+    CDEATH_C varchar(6),
+    CDEATH_D varchar(6),
+    ODISEASE varchar(6),
+    CDEATH varchar(6) NOT NULL,
+    PREGDEATH varchar(1),
+    PDEATH varchar(1) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DEATH ADD CONSTRAINT DEATH_PK PRIMARY KEY (HOSPCODE, PID) ENABLED;
+CREATE TABLE hdc.DENTAL
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    DENTTYPE varchar(1) NOT NULL,
+    SERVPLACE varchar(1) NOT NULL,
+    PTEETH numeric(2,0),
+    PCARIES numeric(2,0),
+    PFILLING numeric(2,0),
+    PEXTRACT numeric(2,0),
+    DTEETH numeric(2,0),
+    DCARIES numeric(2,0),
+    DFILLING numeric(2,0),
+    DEXTRACT numeric(2,0),
+    NEED_FLUORIDE char(1),
+    NEED_SCALING char(1),
+    NEED_SEALANT numeric(2,0),
+    NEED_PFILLING numeric(2,0),
+    NEED_DFILLING numeric(2,0),
+    NEED_PEXTRACT numeric(2,0),
+    NEED_DEXTRACT numeric(2,0),
+    NPROSTHESIS char(1),
+    PERMANENT_PERMANENT numeric(6,0),
+    PERMANENT_PROSTHESIS numeric(6,0),
+    PROSTHESIS_PROSTHESIS numeric(6,0),
+    GUM varchar(6),
+    SCHOOLTYPE char(1),
+    CLASS char(1),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DENTAL ADD CONSTRAINT DENTAL_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATE_SERV) ENABLED;
+CREATE TABLE hdc.DIAGNOSIS_IPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    AN varchar(9) NOT NULL,
+    DATETIME_ADMIT timestamp NOT NULL,
+    WARDDIAG varchar(5) NOT NULL,
+    DIAGTYPE char(1) NOT NULL,
+    DIAGCODE varchar(6) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DIAGNOSIS_IPD ADD CONSTRAINT DIAGNOSIS_IPD_PK PRIMARY KEY (HOSPCODE, PID, AN, DATETIME_ADMIT, DIAGCODE) ENABLED;
+CREATE TABLE hdc.DIAGNOSIS_OPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    DIAGTYPE varchar(1) NOT NULL,
+    DIAGCODE varchar(6) NOT NULL,
+    CLINIC varchar(5) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DIAGNOSIS_OPD ADD CONSTRAINT DIAGNOSIS_OPD_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATE_SERV, DIAGCODE) ENABLED;
+CREATE TABLE hdc.DISABILITY
+(
+    HOSPCODE varchar(5) NOT NULL,
+    DISABID varchar(13),
+    PID varchar(15) NOT NULL,
+    DISABTYPE char(1) NOT NULL,
+    DISABCAUSE char(1),
+    DIAGCODE varchar(6),
+    DATE_DETECT date NOT NULL,
+    DATE_DISAB date,
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DISABILITY ADD CONSTRAINT DISABILITY_PK PRIMARY KEY (HOSPCODE, PID, DISABTYPE) ENABLED;
+CREATE TABLE hdc.DRUG_IPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    AN varchar(9) NOT NULL,
+    DATETIME_ADMIT timestamp NOT NULL,
+    WARDSTAY varchar(5) NOT NULL,
+    TYPEDRUG char(1) NOT NULL,
+    DIDSTD varchar(24) NOT NULL,
+    DNAME varchar(255),
+    DATESTART date,
+    DATEFINISH date,
+    AMOUNT numeric(12,0),
+    UNIT varchar(3),
+    UNIT_PACKING varchar(20),
+    DRUGPRICE numeric(11,2),
+    DRUGCOST numeric(11,2),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DRUG_IPD ADD CONSTRAINT DRUG_IPD_PK PRIMARY KEY (HOSPCODE, PID, AN, TYPEDRUG, DIDSTD) ENABLED;
+CREATE TABLE hdc.DRUG_OPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    CLINIC varchar(5) NOT NULL,
+    DIDSTD varchar(24) NOT NULL,
+    DNAME varchar(255),
+    AMOUNT numeric(12,0),
+    UNIT varchar(3),
+    UNIT_PACKING varchar(20),
+    DRUGPRICE numeric(11,2),
+    DRUGCOST numeric(11,2),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DRUG_OPD ADD CONSTRAINT DRUG_OPD_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATE_SERV, DIDSTD) ENABLED;
+CREATE TABLE hdc.DRUG_REFER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    DATETIME_DSTART timestamp NOT NULL,
+    DATETIME_DFINISH timestamp,
+    DIDSTD varchar(24) NOT NULL,
+    DNAME varchar(255),
+    DDESCRIPTION varchar(255),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DRUG_REFER ADD CONSTRAINT DRUG_REFER_PK PRIMARY KEY (HOSPCODE, REFERID, DATETIME_DSTART, DIDSTD) ENABLED;
+CREATE TABLE hdc.EPI
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    VACCINETYPE varchar(3) NOT NULL,
+    VACCINEPLACE varchar(5),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.EPI ADD CONSTRAINT EPI_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV, VACCINETYPE) ENABLED;
+CREATE TABLE hdc.FP
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    FPTYPE char(1) NOT NULL,
+    FPPLACE varchar(5),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.FP ADD CONSTRAINT FP_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV, FPTYPE) ENABLED;
+CREATE TABLE hdc.FUNCTIONAL
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    FUNCTIONAL_TEST varchar(2) NOT NULL,
+    TESTRESULT varchar(3),
+    DEPENDENT char(1),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.FUNCTIONAL ADD CONSTRAINT FUNCTIONAL_PK PRIMARY KEY (HOSPCODE, PID, SEQ, FUNCTIONAL_TEST) ENABLED;
+CREATE TABLE hdc.HOME
+(
+    HOSPCODE varchar(5) NOT NULL,
+    HID varchar(14) NOT NULL,
+    HOUSE_ID varchar(11),
+    HOUSETYPE varchar(1),
+    ROOMNO varchar(10),
+    CONDO varchar(75),
+    HOUSE varchar(75),
+    SOISUB varchar(255),
+    SOIMAIN varchar(255),
+    ROAD varchar(255),
+    VILLANAME varchar(255),
+    VILLAGE varchar(2),
+    TAMBON varchar(2),
+    AMPUR varchar(2),
+    CHANGWAT varchar(2),
+    TELEPHONE varchar(15),
+    LATITUDE numeric(10,6),
+    LONGITUDE numeric(10,6),
+    NFAMILY varchar(2),
+    LOCATYPE varchar(1),
+    VHVID varchar(15),
+    HEADID varchar(15),
+    TOILET varchar(1),
+    WATER varchar(1),
+    WATERTYPE varchar(1),
+    GARBAGE varchar(1),
+    HOUSING varchar(1),
+    DURABILITY varchar(1),
+    CLEANLINESS varchar(1),
+    VENTILATION varchar(1),
+    LIGHT varchar(1),
+    WATERTM varchar(1),
+    MFOOD varchar(1),
+    BCONTROL varchar(1),
+    ACONTROL varchar(1),
+    CHEMICAL varchar(1),
+    OUTDATE date,
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.HOME ADD CONSTRAINT HOME_PK PRIMARY KEY (HOSPCODE, HID) ENABLED;
+CREATE TABLE hdc.ICF
+(
+    HOSPCODE varchar(5) NOT NULL,
+    DISABID varchar(13),
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    ICF varchar(6) NOT NULL,
+    QUALIFIER char(1),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.ICF ADD CONSTRAINT ICF_PK PRIMARY KEY (HOSPCODE, PID, SEQ, ICF) ENABLED;
+CREATE TABLE hdc.INVESTIGATION_REFER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    DATETIME_INVEST timestamp NOT NULL,
+    INVESTCODE varchar(6) NOT NULL,
+    INVESTNAME varchar(255),
+    DATETIME_REPORT timestamp,
+    INVESTVALUE numeric(6,2),
+    INVESTRESULT varchar(255),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.INVESTIGATION_REFER ADD CONSTRAINT INVESTIGATION_REFER_PK PRIMARY KEY (HOSPCODE, REFERID, DATETIME_INVEST, INVESTCODE) ENABLED;
+CREATE TABLE hdc.LABOR
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    GRAVIDA varchar(2) NOT NULL,
+    LMP date NOT NULL,
+    EDC date,
+    BDATE date NOT NULL,
+    BRESULT varchar(6) NOT NULL,
+    BPLACE char(1) NOT NULL,
+    BHOSP varchar(5),
+    BTYPE char(1) NOT NULL,
+    BDOCTOR char(1) NOT NULL,
+    LBORN numeric(1,0) NOT NULL,
+    SBORN numeric(1,0) NOT NULL,
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.LABOR ADD CONSTRAINT LABOR_PK PRIMARY KEY (HOSPCODE, PID, GRAVIDA, BDATE) ENABLED;
+CREATE TABLE hdc.NCDSCREEN
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    SERVPLACE varchar(1),
+    SMOKE varchar(1),
+    ALCOHOL varchar(1),
+    DMFAMILY varchar(1),
+    HTFAMILY varchar(1),
+    WEIGHT numeric(5,1) NOT NULL,
+    HEIGHT numeric(3,0) NOT NULL,
+    WAIST_CM numeric(3,0) NOT NULL,
+    SBP_1 numeric(3,0) NOT NULL,
+    DBP_1 numeric(3,0) NOT NULL,
+    SBP_2 numeric(3,0),
+    DBP_2 numeric(3,0),
+    BSLEVEL numeric(6,0),
+    BSTEST char(1),
+    SCREENPLACE varchar(5),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.NCDSCREEN ADD CONSTRAINT NCDSCREEN_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV) ENABLED;
+CREATE TABLE hdc.NEWBORN
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    MPID varchar(15),
+    GRAVIDA varchar(2),
+    GA varchar(2),
+    BDATE date NOT NULL,
+    BTIME varchar(6),
+    BPLACE char(1),
+    BHOSP varchar(5),
+    BIRTHNO char(1) NOT NULL,
+    BTYPE char(1),
+    BDOCTOR char(1),
+    BWEIGHT numeric(4,0),
+    ASPHYXIA char(1) NOT NULL,
+    VITK char(1) NOT NULL,
+    TSH char(1) NOT NULL,
+    TSHRESULT numeric(5,1),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.NEWBORN ADD CONSTRAINT NEWBORN_PK PRIMARY KEY (HOSPCODE, PID, BDATE) ENABLED;
+CREATE TABLE hdc.NEWBORNCARE
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    BDATE date NOT NULL,
+    BCARE date NOT NULL,
+    BCPLACE varchar(5),
+    BCARERESULT char(1),
+    FOOD char(1) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.NEWBORNCARE ADD CONSTRAINT NEWBORNCARE_PK PRIMARY KEY (HOSPCODE, PID, BCARE) ENABLED;
+CREATE TABLE hdc.NUTRITION
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    NUTRITIONPLACE varchar(5),
+    WEIGHT numeric(5,1) NOT NULL,
+    HEIGHT numeric(3,0) NOT NULL,
+    HEADCIRCUM numeric(3,0),
+    CHILDDEVELOP char(1),
+    FOOD char(1),
+    BOTTLE char(1),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.NUTRITION ADD CONSTRAINT NUTRITION_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV) ENABLED;
+CREATE TABLE hdc.PERSON
+(
+    HOSPCODE varchar(5) NOT NULL,
+    CID varchar(13),
+    PID varchar(15) NOT NULL,
+    HID varchar(14),
+    PRENAME varchar(3) NOT NULL,
+    NAME varchar(50) NOT NULL,
+    LNAME varchar(50) NOT NULL,
+    HN varchar(15),
+    SEX varchar(1) NOT NULL,
+    BIRTH date NOT NULL,
+    MSTATUS char(1),
+    OCCUPATION_OLD varchar(3),
+    OCCUPATION_NEW varchar(4),
+    RACE varchar(3),
+    NATION varchar(3) NOT NULL,
+    RELIGION varchar(2),
+    EDUCATION varchar(2),
+    FSTATUS varchar(1),
+    FATHER varchar(13),
+    MOTHER varchar(13),
+    COUPLE varchar(13),
+    VSTATUS varchar(1),
+    MOVEIN date,
+    DISCHARGE varchar(1),
+    DDISCHARGE date,
+    ABOGROUP varchar(1),
+    RHGROUP varchar(1),
+    LABOR varchar(2),
+    PASSPORT varchar(8),
+    TYPEAREA varchar(1) NOT NULL,
+    D_UPDATE timestamp,
+    TELEPHONE varchar(15),
+    MOBILE varchar(15),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.PERSON ADD CONSTRAINT PERSON_PK PRIMARY KEY (HOSPCODE, PID) ENABLED;
+CREATE TABLE hdc.POSTNATAL
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    GRAVIDA varchar(2) NOT NULL,
+    BDATE date NOT NULL,
+    PPCARE date NOT NULL,
+    PPPLACE varchar(5),
+    PPRESULT char(1) NOT NULL,
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.POSTNATAL ADD CONSTRAINT POSTNATAL_PK PRIMARY KEY (HOSPCODE, PID, GRAVIDA, PPCARE) ENABLED;
+CREATE TABLE hdc.PROCEDURE_IPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    AN varchar(9) NOT NULL,
+    DATETIME_ADMIT timestamp NOT NULL,
+    WARDSTAY varchar(5) NOT NULL,
+    PROCEDCODE varchar(7) NOT NULL,
+    TIMESTART timestamp NOT NULL,
+    TIMEFINISH timestamp,
+    SERVICEPRICE numeric(11,2),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.PROCEDURE_IPD ADD CONSTRAINT PROCEDURE_IPD_PK PRIMARY KEY (HOSPCODE, PID, AN, DATETIME_ADMIT, PROCEDCODE, TIMESTART) ENABLED;
+CREATE TABLE hdc.PROCEDURE_OPD
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    CLINIC varchar(5) NOT NULL,
+    PROCEDCODE varchar(7) NOT NULL,
+    SERVICEPRICE numeric(11,2),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.PROCEDURE_OPD ADD CONSTRAINT PROCEDURE_OPD_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATE_SERV, PROCEDCODE) ENABLED;
+CREATE TABLE hdc.PROCEDURE_REFER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    TIMESTART timestamp NOT NULL,
+    TIMEFINISH timestamp,
+    PROCEDURENAME varchar(255),
+    PROCEDCODE varchar(7) NOT NULL,
+    PDESCRIPTION varchar(255),
+    PROCEDRESULT varchar(255),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.PROCEDURE_REFER ADD CONSTRAINT PROCEDURE_REFER_PK PRIMARY KEY (HOSPCODE, REFERID, TIMESTART, PROCEDCODE) ENABLED;
+CREATE TABLE hdc.PROVIDER
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PROVIDER varchar(15) NOT NULL,
+    REGISTERNO varchar(15),
+    COUNCIL varchar(2),
+    CID varchar(13) NOT NULL,
+    PRENAME varchar(20),
+    NAME varchar(50) NOT NULL,
+    LNAME varchar(50) NOT NULL,
+    SEX varchar(1) NOT NULL,
+    BIRTH date NOT NULL,
+    PROVIDERTYPE varchar(2) NOT NULL,
+    STARTDATE date NOT NULL,
+    OUTDATE date,
+    MOVEFROM varchar(5),
+    MOVETO varchar(5),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.PROVIDER ADD CONSTRAINT PROVIDER_PK PRIMARY KEY (HOSPCODE, PROVIDER) ENABLED;
+CREATE TABLE hdc.REFER_HISTORY
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    AN varchar(9),
+    REFERID_ORIGIN varchar(10),
+    HOSPCODE_ORIGIN varchar(5),
+    DATETIME_SERV timestamp NOT NULL,
+    DATETIME_ADMIT timestamp,
+    DATETIME_REFER timestamp NOT NULL,
+    CLINIC_REFER varchar(5),
+    HOSP_DESTINATION varchar(5) NOT NULL,
+    CHIEFCOMP varchar(255),
+    PHYSICALEXAM varchar(255),
+    DIAGFIRST varchar(255),
+    DIAGLAST varchar(255) NOT NULL,
+    PSTATUS varchar(255) NOT NULL,
+    PTYPE varchar(1) NOT NULL,
+    EMERGENCY varchar(1) NOT NULL,
+    PTYPEDIS varchar(2),
+    CAUSEOUT varchar(1) NOT NULL,
+    REQUEST varchar(255),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.REFER_HISTORY ADD CONSTRAINT REFER_HISTORY_PK PRIMARY KEY (HOSPCODE, REFERID) ENABLED;
+CREATE TABLE hdc.REFER_RESULT
+(
+    HOSPCODE varchar(5) NOT NULL,
+    REFERID_SOURCE varchar(10) NOT NULL,
+    REFERID_PROVINCE varchar(10),
+    HOSP_SOURCE varchar(5) NOT NULL,
+    REFER_RESULT varchar(1) NOT NULL,
+    DATETIME_IN timestamp,
+    PID_IN varchar(15),
+    AN_IN varchar(9),
+    REASON varchar(255),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.REFER_RESULT ADD CONSTRAINT REFER_RESULT_PK PRIMARY KEY (HOSPCODE, REFERID_SOURCE, HOSP_SOURCE) ENABLED;
+CREATE TABLE hdc.SPECIALPP
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16),
+    DATE_SERV date NOT NULL,
+    SERVPLACE char(1) NOT NULL,
+    PPSPECIAL varchar(6) NOT NULL,
+    PPSPLACE varchar(5),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.SPECIALPP ADD CONSTRAINT SPECIALPP_PK PRIMARY KEY (HOSPCODE, PID, DATE_SERV, PPSPECIAL) ENABLED;
+CREATE TABLE hdc.SURVEILLANCE
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATE_SERV date NOT NULL,
+    AN varchar(9),
+    DATETIME_ADMIT timestamp,
+    SYNDROME varchar(4),
+    DIAGCODE varchar(6) NOT NULL,
+    CODE506 varchar(2) NOT NULL,
+    DIAGCODELAST varchar(6),
+    CODE506LAST varchar(2),
+    ILLDATE date NOT NULL,
+    ILLHOUSE varchar(75),
+    ILLVILLAGE varchar(2) NOT NULL,
+    ILLTAMBON varchar(2) NOT NULL,
+    ILLAMPUR varchar(2) NOT NULL,
+    ILLCHANGWAT varchar(2) NOT NULL,
+    LATITUDE numeric(10,6),
+    LONGITUDE numeric(10,6),
+    PTSTATUS char(1) NOT NULL,
+    DATE_DEATH date,
+    COMPLICATION varchar(3),
+    ORGANISM varchar(4),
+    PROVIDER varchar(15),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.SURVEILLANCE ADD CONSTRAINT SURVEILLANCE_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DIAGCODE) ENABLED;
+CREATE TABLE hdc.VILLAGE
+(
+    HOSPCODE varchar(5) NOT NULL,
+    VID varchar(8) NOT NULL,
+    NTRADITIONAL numeric(4,0),
+    NMONK numeric(4,0),
+    NRELIGIONLEADER numeric(4,0),
+    NBROADCAST numeric(2,0),
+    NRADIO numeric(2,0),
+    NPCHC numeric(2,0),
+    NCLINIC numeric(3,0),
+    NDRUGSTORE numeric(3,0),
+    NCHILDCENTER numeric(3,0),
+    NPSCHOOL numeric(2,0),
+    NSSCHOOL numeric(2,0),
+    NTEMPLE numeric(2,0),
+    NRELIGIOUSPLACE numeric(2,0),
+    NMARKET numeric(2,0),
+    NSHOP numeric(3,0),
+    NFOODSHOP numeric(3,0),
+    NSTALL numeric(3,0),
+    NRAINTANK numeric(3,0),
+    NCHICKENFARM numeric(3,0),
+    NPIGFARM numeric(3,0),
+    WASTEWATER char(1),
+    GARBAGE char(1),
+    NFACTORY numeric(3,0),
+    LATITUDE numeric(10,6),
+    LONGITUDE numeric(10,6),
+    OUTDATE date,
+    NUMACTUALLY numeric(2,0),
+    RISKTYPE numeric(3,0),
+    NUMSTATELESS numeric(3,0),
+    NEXERCISECLUB numeric(3,0),
+    NOLDERLYCLUB numeric(3,0),
+    NDISABLECLUB numeric(3,0),
+    NNUMBERONECLUB numeric(3,0),
+    D_UPDATE timestamp NOT NULL,
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.VILLAGE ADD CONSTRAINT VILLAGE_PK PRIMARY KEY (HOSPCODE, VID) ENABLED;
+CREATE TABLE hdc.WOMEN
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    FPTYPE varchar(1) NOT NULL,
+    NOFPCAUSE char(1),
+    TOTALSON numeric(2,0),
+    NUMBERSON numeric(2,0),
+    ABORTION numeric(2,0),
+    STILLBIRTH numeric(2,0),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.WOMEN ADD CONSTRAINT WOMEN_PK PRIMARY KEY (HOSPCODE, PID) ENABLED;
+CREATE TABLE hdc.DRUGALLERGY
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    DATERECORD date NOT NULL,
+    DRUGALLERGY varchar(24) NOT NULL,
+    DNAME varchar(255),
+    TYPEDX char(1),
+    ALEVEL char(1),
+    SYMPTOM varchar(2),
+    INFORMANT char(1),
+    INFORMHOSP varchar(5) NOT NULL,
+    D_UPDATE timestamp,
+    PROVIDER varchar(15),
+    CID varchar(13),
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.DRUGALLERGY ADD CONSTRAINT DRUGALLERGY_PK PRIMARY KEY (HOSPCODE, PID, DRUGALLERGY) ENABLED;
+CREATE TABLE hdc.ACCIDENT
+(
+    HOSPCODE varchar(5) NOT NULL,
+    PID varchar(15) NOT NULL,
+    SEQ varchar(16) NOT NULL,
+    DATETIME_SERV timestamp NOT NULL,
+    DATETIME_AE timestamp,
+    AETYPE varchar(2),
+    AEPLACE varchar(2) NOT NULL,
+    TYPEIN_AE varchar(1) NOT NULL,
+    TRAFFIC varchar(1),
+    VEHICLE varchar(2),
+    ALCOHOL varchar(1) NOT NULL,
+    NACROTIC_DRUG varchar(1) NOT NULL,
+    BELT varchar(1),
+    HELMET varchar(1),
+    AIRWAY varchar(1) NOT NULL,
+    STOPBLEED varchar(1) NOT NULL,
+    SPLINT varchar(1) NOT NULL,
+    FLUID varchar(1) NOT NULL,
+    URGENCY varchar(1) NOT NULL,
+    COMA_EYE varchar(1),
+    COMA_SPEAK varchar(1),
+    COMA_MOVEMENT varchar(1),
+    D_UPDATE timestamp NOT NULL,
+    CID varchar(13),
+    HDC_DATE timestamp,
+    SOURCE_DATA varchar(6)
+);
+ALTER TABLE hdc.ACCIDENT ADD CONSTRAINT ACCIDENT_PK PRIMARY KEY (HOSPCODE, PID, SEQ, DATETIME_SERV) ENABLED;
