@@ -2,4 +2,6 @@
 
 You can use the [editor on GitHub](https://github.com/bodinint/downloads/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
+## Welcome to My Blogs
 
+You can link [medium.com/@bodin](https://medium.com/@bodin) 
